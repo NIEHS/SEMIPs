@@ -1,4 +1,5 @@
 tabPanel("Bootstrap",
+         
          fluidRow(
            
            div(style="display: inline-block;vertical-align:top; width: 275px;",fileInput("fileSubset","Upload the subset file")), # Subset file input

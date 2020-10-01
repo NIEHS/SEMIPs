@@ -1,3 +1,4 @@
+
 options(warn=-1)
 source("helpers.R")
 
@@ -35,7 +36,11 @@ fluidPage(
       
       source("ui-Tscore.R",local=TRUE)$value,
       source("ui-bootstrap.R",local=TRUE)$value,
-      source("ui-sem.R",local=TRUE)$value,
+
+#      source("ui-sem.R",local=TRUE)$value,
+      source("ui-sem-dev.R",local=TRUE)$value,
+      #source("ui-dynamic.R",local=TRUE)$value,
+
       source("ui-instructions.R",local=TRUE)$value
     
       

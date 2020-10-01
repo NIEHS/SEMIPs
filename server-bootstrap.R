@@ -25,14 +25,14 @@ fs <- eventReactive(input$goButton2, {
 
       subset <- as.data.frame(globalValues$subset) 
   
-  # Requires sig and array files to already be uploaded
-  req(MasterSig <- globalValues$MasterSig)
-  req(MasterArray <- globalValues$MasterArray)
-  req(inFileS <- input$fileSignature) 
-  req(inFileA <- input$fileArray)
+      # Requires sig and array files to already be uploaded
+      req(MasterSig <- globalValues$MasterSig)
+      req(MasterArray <- globalValues$MasterArray)
+      req(inFileS <- input$fileSignature) 
+      req(inFileA <- input$fileArray)
   
-  colnames(MasterSig)[1] <- "Gene"
-  colnames(MasterArray)[1]<-"Gene"
+      colnames(MasterSig)[1] <- "Gene"
+      colnames(MasterArray)[1]<-"Gene"
   
   files <- c() # Path names vector
   tmpdir <- tempdir() # Set up temp directory, mainly to bypass server. Can change 

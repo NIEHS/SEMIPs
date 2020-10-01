@@ -18,15 +18,20 @@ chosenEndo <- reactive({
   input$endo
 })
 
-# Output lavaan sem
-output$semSummary <- renderPrint({
+tempdirectory <- tempdir()
+
+lavaanText <- reactive({
   mod <- paste0(chosenEndo()," ~ ",chosenExo1()," + ", chosenExo2())
   mod.fit <<- sem(mod, data=Combined)
+  
+  sink(paste0(tempdirectory, "/model.txt"))
+  print(summary(mod.fit))
+  sink()
+  
   summary(mod.fit)
 })
 
-# Create SEM model image
-output$semModel <- renderImage ({
+semImage <- reactive({
   # Values on SEM
   exo1endo <- parameterestimates(mod.fit)[1,7] # pvalue between exo1 and endo
   exo2endo <- parameterestimates(mod.fit)[2,7] # pvalue between exo2 and endo
@@ -34,12 +39,11 @@ output$semModel <- renderImage ({
   endosPvalue <- cor.test(Combined[,chosenExo1()],Combined[,chosenExo2()])$p.value # pvalue between endos
   
   # Temp directory setup
-  tmpdir <- tempdir()
-  filePath <- paste0(tmpdir,"/myplot.png")
+  tmpdir <- tempdirectory
+  filePath <- paste0(tmpdir,"myplot.png")
   
   # Plotting on png to save in temp directory
-  #png(file=filePath, bg="transparent",width=800, height=800,res=1000) # Start png
-  png(file=filePath, bg="transparent",width=600, height=600,res=500) # Start png
+  png(file=filePath, bg="transparent",width=800, height=800,res=1000) # Start png
   par(mar=rep(0, 4),bg = 'white')
   plot(1:9.9,type='n',axes=FALSE,ann=FALSE)
   rasterImage(img, 1, 1, 9, 9)
@@ -51,9 +55,68 @@ output$semModel <- renderImage ({
   text(5,9.1,paste0("r = ",signif(endosCor),", (p = ",signif(endosPvalue),")"),cex=.1)
   dev.off() # End png
   
-  # Retrieve created png
+  filePath
+  # # Retrieve created png
+  # list(
+  #   src = filePath,
+  #   contentType = "image/png")
+})
+
+# Output lavaan sem
+output$semSummary <- renderPrint({
+  # mod <- paste0(chosenEndo()," ~ ",chosenExo1()," + ", chosenExo2())
+  # mod.fit <<- sem(mod, data=Combined)
+  # summary(mod.fit)
+  lavaanText()
+})
+
+# Create SEM model image
+output$semModel <- renderImage ({
   list(
-    src = filePath,
+    src = semImage(),
     contentType = "image/png")
   
+  # # Values on SEM
+  # exo1endo <- parameterestimates(mod.fit)[1,7] # pvalue between exo1 and endo
+  # exo2endo <- parameterestimates(mod.fit)[2,7] # pvalue between exo2 and endo
+  # endosCor <- as.numeric(cor.test(Combined[,chosenExo1()],Combined[,chosenExo2()])$estimate) # correlation between endos
+  # endosPvalue <- cor.test(Combined[,chosenExo1()],Combined[,chosenExo2()])$p.value # pvalue between endos
+  # 
+  # # Temp directory setup
+  # tmpdir <- tempdir()
+  # filePath <- paste0(tmpdir,"/myplot.png")
+  # 
+  # # Plotting on png to save in temp directory
+  # png(file=filePath, bg="transparent",width=800, height=800,res=1000) # Start png
+  # par(mar=rep(0, 4),bg = 'white')
+  # plot(1:9.9,type='n',axes=FALSE,ann=FALSE)
+  # rasterImage(img, 1, 1, 9, 9)
+  # text(2.55,7.1,chosenExo1(),cex=.1)
+  # text(7.45,7.1,chosenExo2(),cex=.1)
+  # text(5,2.25,chosenEndo(),cex=.1)
+  # text(3,4.5,paste0("p = ",signif(exo1endo)),cex=.1)
+  # text(7.5,4.5,paste0("p = ",signif(exo2endo)),cex=.1)
+  # text(5,9.1,paste0("r = ",signif(endosCor),", (p = ",signif(endosPvalue),")"),cex=.1)
+  # dev.off() # End png
+  # 
+  # # Retrieve created png
+  # list(
+  #   src = filePath,
+  #   contentType = "image/png")
+  
 },deleteFile = FALSE)
+
+
+output$semdownload <- downloadHandler( 
+  filename = function() {
+    paste("output", "zip", sep=".")
+  },
+  content = function(fname){
+    tmp <- getwd()
+    setwd(tempdirectory)
+    zip(zipfile=fname,files=c("model.txt","myplot.png"))
+    setwd(tmp)
+  }
+  ,
+  contentType = "application/zip"
+)
