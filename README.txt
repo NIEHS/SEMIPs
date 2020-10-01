@@ -18,7 +18,7 @@ please make sure to resolve those errors to make sure the dependencies are prope
 4) Copy, paste, and run the following line of code in your R command line, using the specific directory of 
 the SignatureAnalysis app on your computer:
 
- shiny::runApp("/Users/li11/myGit/SignatureAnalysis/")
+ shiny::runApp("/Users/li11/myGit/SEMIPs/")
 
 5) The application should launch and be used interactively
 
