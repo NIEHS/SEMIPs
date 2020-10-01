@@ -1,0 +1,12 @@
+name: SignatureAnalysis
+title: SignatureAnalysis
+username:
+account: 2waybene
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2691764
+bundleId: 3542246
+url: https://2waybene.shinyapps.io/SignatureAnalysis/
+when: 1598023727.77244
+asMultiple: FALSE
+asStatic: FALSE
