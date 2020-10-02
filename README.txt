@@ -1,4 +1,4 @@
-SignatureAnalysis production version 0.0.2
+Structure Equation Modeling for In-silico Perturbations (SEMIPs) production version 0.0.2
 
 To run this program online visit this webpage:
 https://2waybene.shinyapps.io/SignatureAnalysis/
