@@ -3,7 +3,7 @@ source("helpers.R")
 
 fluidPage(
            
-  titlePanel("Signature Analysis"),
+  titlePanel("SEMIPs"),
   
   
   sidebarLayout(
