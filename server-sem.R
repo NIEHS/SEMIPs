@@ -1,9 +1,25 @@
-# Load T-Scores variables, SEM blank image
-load ("dataSEM/parsedNewDT.rda") 
-load ("dataSEM/new_t_scores_w_lev.rda")
-Combined <- as.data.frame(c(dat,NewDT))
+
+
+dat <- NULL
+
+
+if (file.exists("dataSEM/sampleDAT.txt")){
+  dt <- read.table ("dataSEM/sampleDAT.txt", sep="\t", header = TRUE )
+  dat <- as.data.frame(dt[,-1])
+  rownames(dat) <- dt[,1]
+  Combined <- dat
+}else{
+  load ("dataSEM/parsedNewDT.rda")
+  load ("dataSEM/new_t_scores_w_lev.rda")
+  Combined <- as.data.frame(c(dat,NewDT))
+}
+
+
+
 img <- readPNG("www/SEMBlank2.png")
 img <- as.raster(img)
+
+
 
 # User select variables
 chosenExo1 <- reactive({    
@@ -18,15 +34,20 @@ chosenEndo <- reactive({
   input$endo
 })
 
-# Output lavaan sem
-output$semSummary <- renderPrint({
+tempdirectory <- tempdir()
+
+lavaanText <- reactive({
   mod <- paste0(chosenEndo()," ~ ",chosenExo1()," + ", chosenExo2())
   mod.fit <<- sem(mod, data=Combined)
-  summary(mod.fit)
+  
+  sink(paste0(tempdirectory, "/model.txt"))
+  print(summary(mod.fit, fit.measures = TRUE))
+  sink()
+  
+  summary(mod.fit, fit.measures = TRUE)
 })
 
-# Create SEM model image
-output$semModel <- renderImage ({
+semImage <- reactive({
   # Values on SEM
   exo1endo <- parameterestimates(mod.fit)[1,7] # pvalue between exo1 and endo
   exo2endo <- parameterestimates(mod.fit)[2,7] # pvalue between exo2 and endo
@@ -34,12 +55,11 @@ output$semModel <- renderImage ({
   endosPvalue <- cor.test(Combined[,chosenExo1()],Combined[,chosenExo2()])$p.value # pvalue between endos
   
   # Temp directory setup
-  tmpdir <- tempdir()
-  filePath <- paste0(tmpdir,"/myplot.png")
+  tmpdir <- tempdirectory
+  filePath <- paste0(tmpdir,"myplot.png")
   
   # Plotting on png to save in temp directory
-  #png(file=filePath, bg="transparent",width=800, height=800,res=1000) # Start png
-  png(file=filePath, bg="transparent",width=600, height=600,res=500) # Start png
+  png(file=filePath, bg="transparent",width=800, height=800,res=1000) # Start png
   par(mar=rep(0, 4),bg = 'white')
   plot(1:9.9,type='n',axes=FALSE,ann=FALSE)
   rasterImage(img, 1, 1, 9, 9)
@@ -51,9 +71,36 @@ output$semModel <- renderImage ({
   text(5,9.1,paste0("r = ",signif(endosCor),", (p = ",signif(endosPvalue),")"),cex=.1)
   dev.off() # End png
   
-  # Retrieve created png
+  filePath
+
+})
+
+# Output lavaan sem
+output$semSummary <- renderPrint({
+
+  lavaanText()
+})
+
+# Create SEM model image
+output$semModel <- renderImage ({
   list(
-    src = filePath,
+    src = semImage(),
     contentType = "image/png")
+ 
   
 },deleteFile = FALSE)
+
+
+output$semdownload <- downloadHandler( 
+  filename = function() {
+    paste("output", "zip", sep=".")
+  },
+  content = function(fname){
+    tmp <- getwd()
+    setwd(tempdirectory)
+    zip(zipfile=fname,files=c("model.txt","myplot.png"))
+    setwd(tmp)
+  }
+  ,
+  contentType = "application/zip"
+)
