@@ -1,6 +1,8 @@
 options(warn=-1)
 source("helpers.R")
 
+#source("helper_02.R")
+
 fluidPage(
            
   titlePanel("SEMIPs"),
@@ -34,8 +36,9 @@ fluidPage(
     title = "Tabs:",
       
       source("ui-Tscore.R",local=TRUE)$value,
-      source("ui-bootstrap.R",local=TRUE)$value,
       source("ui-sem.R",local=TRUE)$value,
+      source("ui-bootstrap.R",local=TRUE)$value,
+     # source("ui-sem.R",local=TRUE)$value,
       source("ui-instructions.R",local=TRUE)$value
     
       

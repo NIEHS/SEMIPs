@@ -1,7 +1,3 @@
-##  R packages needed for this app
-##  Check whether installed properly, 
-##  Install it if needed
-
 list.of.packages <- c("shiny",
                       "DT",
                       "readxl",
