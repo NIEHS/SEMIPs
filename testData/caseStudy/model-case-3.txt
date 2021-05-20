@@ -1,0 +1,81 @@
+lavaan 0.6-8 ended normally after 13 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                         3
+                                                      
+  Number of observations                           115
+                                                      
+Model Test User Model:
+                                                      
+  Test statistic                                 0.000
+  Degrees of freedom                                 0
+
+Model Test Baseline Model:
+
+  Test statistic                                67.046
+  Degrees of freedom                                 2
+  P-value                                        0.000
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    1.000
+  Tucker-Lewis Index (TLI)                       1.000
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)                -87.153
+  Loglikelihood unrestricted model (H1)        -87.153
+                                                      
+  Akaike (AIC)                                 180.307
+  Bayesian (BIC)                               188.542
+  Sample-size adjusted Bayesian (BIC)          179.059
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.000
+  90 Percent confidence interval - lower         0.000
+  90 Percent confidence interval - upper         0.000
+  P-value RMSEA <= 0.05                             NA
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.000
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Expected
+  Information saturated (h1) model          Structured
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(>|z|)
+  SOX17_lev ~                                         
+    Case.III          0.078    0.018    4.294    0.000
+    PRG_c_FC13_P01    0.202    0.041    4.964    0.000
+
+Variances:
+                   Estimate  Std.Err  z-value  P(>|z|)
+   .SOX17_lev         0.267    0.035    7.583    0.000
+
+$FIT
+             npar              fmin             chisq                df            pvalue 
+            3.000             0.000             0.000             0.000                NA 
+   baseline.chisq       baseline.df   baseline.pvalue               cfi               tli 
+           67.046             2.000             0.000             1.000             1.000 
+             logl unrestricted.logl               aic               bic            ntotal 
+          -87.153           -87.153           180.307           188.542           115.000 
+             bic2             rmsea    rmsea.ci.lower    rmsea.ci.upper      rmsea.pvalue 
+          179.059             0.000             0.000             0.000                NA 
+             srmr 
+            0.000 
+
+$PE
+               lhs op              rhs exo        est         se        z       pvalue
+1        SOX17_lev  ~         Case.III   0 0.07780696 0.01811786 4.294490 1.750956e-05
+2        SOX17_lev  ~ PRG_act_FC13_P01   0 0.20218288 0.04073271 4.963649 6.918092e-07
+3        SOX17_lev ~~        SOX17_lev   0 0.26655720 0.03515252 7.582875 3.375078e-14
+4         Case.III ~~         Case.III   1 9.79579169 0.00000000       NA           NA
+5         Case.III ~~ PRG_act_FC13_P01   1 2.30212695 0.00000000       NA           NA
+6 PRG_act_FC13_P01 ~~ PRG_act_FC13_P01   1 1.93805779 0.00000000       NA           NA
+
