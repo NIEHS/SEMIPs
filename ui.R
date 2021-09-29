@@ -1,11 +1,16 @@
+##===========================================================================
+##  Project: SEMIPs Structural Equation Modeling of In silico Perturbations
+##  github: https://github.com/NIEHS/SEMIPs 
+##  FileName: ui.R
+##  Author: Kevin Day
+##  Comment: 
+##      This is the front end UI for all components of the app
+##============================================================================
 options(warn=-1)
 source("helpers.R")
 
 fluidPage(
-           
   titlePanel("SEMIPs"),
-  
-  
   sidebarLayout(
     
     # Sidebar panel for inputs ----
@@ -22,23 +27,16 @@ fluidPage(
       br(),
       actionButton("goButton", "Go!",
                    style="font-weight: bold; color: #00FF08; background-color: #aea79f; border-color: #aea79f")
-      
-      
-    
   ),
   tagList(
   mainPanel(
   navbarPage( # Theme and tabs
-    
     theme = "bootstrap.min.cerulean.css",
     title = "Tabs:",
-      
       source("ui-Tscore.R",local=TRUE)$value,
       source("ui-sem.R",local=TRUE)$value,
       source("ui-bootstrap.R",local=TRUE)$value,
       source("ui-instructions.R",local=TRUE)$value
-    
-      
     )
   ) #end navbarpage
 ) #end taglist

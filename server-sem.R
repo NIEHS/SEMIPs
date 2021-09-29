@@ -1,7 +1,13 @@
-
+##===========================================================================
+##  Project: SEMIPs Structural Equation Modeling of In silico Perturbations
+##  github: https://github.com/NIEHS/SEMIPs 
+##  FileName: server-sem.R
+##  Author: Kevin Day
+##  Comment: 
+##      This is the implementation of SEM modeling and Information tab
+##============================================================================
 
 dat <- NULL
-
 
 if (file.exists("dataSEM/sampleDAT.txt")){
   dt <- read.table ("dataSEM/sampleDAT.txt", sep="\t", header = TRUE )
@@ -14,12 +20,8 @@ if (file.exists("dataSEM/sampleDAT.txt")){
   Combined <- as.data.frame(c(dat,NewDT))
 }
 
-
-
 img <- readPNG("www/SEMBlank2.png")
 img <- as.raster(img)
-
-
 
 # User select variables
 chosenExo1 <- reactive({    
@@ -39,8 +41,8 @@ tempdirectory <- tempdir()
 lavaanText <- reactive({
   mod <- paste0(chosenEndo()," ~ ",chosenExo1()," + ", chosenExo2())
   mod.fit <<- sem(mod, data=Combined)
-  
-  sink(paste0(tempdirectory, "/model.txt"))
+  ## to address reviewer's comment, JYL 09292021
+  sink(paste0(tempdirectory, "/SEMfitting.txt"))
   print(summary(mod.fit, fit.measures = TRUE))
   sink()
   
@@ -53,10 +55,9 @@ semImage <- reactive({
   exo2endo <- parameterestimates(mod.fit)[2,7] # pvalue between exo2 and endo
   endosCor <- as.numeric(cor.test(Combined[,chosenExo1()],Combined[,chosenExo2()])$estimate) # correlation between endos
   endosPvalue <- cor.test(Combined[,chosenExo1()],Combined[,chosenExo2()])$p.value # pvalue between endos
-  
-  # Temp directory setup
-  tmpdir <- tempdirectory
-  filePath <- paste0(tmpdir,"myplot.png")
+
+  ## to address reviewer's comment, JYL 09292021
+  filePath <- paste0(tempdirectory, "/SEMplot.png")
   
   # Plotting on png to save in temp directory
   png(file=filePath, bg="transparent",width=800, height=800,res=1000) # Start png
@@ -70,14 +71,12 @@ semImage <- reactive({
   text(7.5,4.5,paste0("p = ",signif(exo2endo)),cex=.1)
   text(5,9.1,paste0("r = ",signif(endosCor),", (p = ",signif(endosPvalue),")"),cex=.1)
   dev.off() # End png
-  
+  #returning an object, JYL 09292021
   filePath
-
 })
 
 # Output lavaan sem
 output$semSummary <- renderPrint({
-
   lavaanText()
 })
 
@@ -86,10 +85,7 @@ output$semModel <- renderImage ({
   list(
     src = semImage(),
     contentType = "image/png")
- 
-  
 },deleteFile = FALSE)
-
 
 output$semdownload <- downloadHandler( 
   filename = function() {
@@ -98,7 +94,7 @@ output$semdownload <- downloadHandler(
   content = function(fname){
     tmp <- getwd()
     setwd(tempdirectory)
-    zip(zipfile=fname,files=c("model.txt","myplot.png"))
+    zip(zipfile=fname,files=c("SEMfitting.txt","SEMplot.png"))
     setwd(tmp)
   }
   ,

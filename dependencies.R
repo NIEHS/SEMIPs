@@ -1,4 +1,12 @@
-#Install Packages
+##===========================================================================
+##  Project: SEMIPs Structural Equation Modeling of In silico Perturbations
+##  github: https://github.com/NIEHS/SEMIPs 
+##  FileName: dependencies.R
+##  Author: Jianying Li
+##  Comment: 
+##      This file will install all depenedent libraries
+##============================================================================
+
 install.packages("shiny")
 install.packages("DT")
 install.packages("readxl")

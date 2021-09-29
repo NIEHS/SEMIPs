@@ -1,6 +1,13 @@
-##  R packages needed for this app
-##  Check whether installed properly, 
-##  Install it if needed
+##===========================================================================
+##  Project: SEMIPs Structural Equation Modeling of In silico Perturbations
+##  github: https://github.com/NIEHS/SEMIPs 
+##  FileName: helpers.R
+##  Author: Kevin Day
+##  Comment: 
+##      This File lists all R packages needed for this app
+##      Once it is run, it will check whether installed properly, 
+##      will install it if needed
+##============================================================================
 
 list.of.packages <- c("shiny",
                       "DT",
@@ -30,5 +37,8 @@ if (nrow(showConnections()) > 38) {
   pskill(Sys.getpid(), signal = SIGTERM)
 }
 
+##  The following are default data file to be loaded when the app is launched
 Reference <- read_excel("Reference.xlsx") # Mouse to human reference table
 allSig <- read_excel("allSig.xlsx") # All gene signature (high/low) table
+
+

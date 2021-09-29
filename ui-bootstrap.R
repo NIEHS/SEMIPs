@@ -1,6 +1,14 @@
+##===========================================================================
+##  Project: SEMIPs Structural Equation Modeling of In silico Perturbations
+##  github: https://github.com/NIEHS/SEMIPs 
+##  FileName: ui-bootstrap.R
+##  Author: Kevin Day 
+##  Comment: 
+##      This is the the front end UI for bootstrap simulation
+##============================================================================
+
 tabPanel("Bootstrap",
          fluidRow(
-           
            div(style="display: inline-block;vertical-align:top; width: 275px;",fileInput("fileSubset","Upload the subset file")), # Subset file input
            div(style="display: inline-block;vertical-align:top; width: 30px;",HTML("<br>")),
            radioButtons("radio", label = h3("Bootstrap selections"),

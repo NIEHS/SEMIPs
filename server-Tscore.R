@@ -1,7 +1,17 @@
-checkRadioGene <- reactive({  # Mouse/Human select
+##===========================================================================
+##  Project: SEMIPs Structural Equation Modeling of In silico Perturbations
+##  github: https://github.com/NIEHS/SEMIPs 
+##  FileName: server-Tscores.R
+##  Author: Kevin Day
+##  Comment: 
+##      This is the implementation of Tscores calculation
+##      and, other action response to user's input
+##============================================================================
+
+# Mouse/Human select
+checkRadioGene <- reactive({  
   input$radioGene
 })
-
 
 # Reactive display sig table
 output$sigUploaded <- reactive({  
@@ -35,9 +45,6 @@ output$Array <- renderDataTable({
   datatable(HumanArray,rownames = FALSE,
             options = list(scroller = TRUE,scrollX = T,paging=TRUE,pageLength =5,bLengthChange=0, bFilter=0))  # options = list(pageLength = -1,dom = 't') 
 })
-
-
-
 
 # T-Score calculations tscores()
 tscores <- eventReactive(input$goButton,{   
@@ -124,7 +131,6 @@ tscores <- eventReactive(input$goButton,{
   colnames(TScores) <- c("Variable","p-value", "T-score") 
   TScores # Storing table into variables tscores()
 })
-
 
 
 # T-Scores table display
