@@ -4,7 +4,7 @@
 ##  FileName: ui-sem.R
 ##  Author: Kevin Day
 ##  Comment: 
-##      This is the front end UI for SEM modeling and Information tab
+##      This is the front end UI for SEM modeling tab
 ##============================================================================
 
 dat <- NULL
